@@ -28,9 +28,11 @@ if($_POST['count'] && $_POST['count'] > 0){
 	}
 	//Ensure some people actually entered the Secret Santa
 	if(sizeof($users)<2) die("Only one valid user was detected. Please ensure you fill out the form fully.");
+	//Ensure we aren't going to send to many emails.
+	if(sizeof($users)>30) die("Sorry, but due to risk of spamming this script is limited on only allow secret santa's of up to 30 people.");
+	
 	//Get spend amount
 	$amount = (int) $_POST['amount'];
-	
 	
 	//Get Secret Santa Class
 	require ('Santa.class.php');
@@ -196,10 +198,10 @@ if($_POST['count'] && $_POST['count'] > 0){
 				</div>
 				<p>
 				Please take care when filling out each persons email address as if its entered wrong they won't know who they have for secret santa.
-				</p>
+				Due to the risk of spamming, this script is limited to allow a maximum of 30 participants.</p>
 				<input type='hidden' id='count' name='count' value='0' />
 			  
-			  <input class='run' type='submit' value='Send!' onclick='confirm("Are you sure you want to send the secret santa emails now?")'/>
+				<input class='run' type='submit' value='Send!' onclick='confirm("Are you sure you want to send the secret santa emails now?")'/>
 			</form>
 			
 		</div>
