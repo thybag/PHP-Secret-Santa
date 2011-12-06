@@ -105,7 +105,13 @@ if($_POST['count'] && $_POST['count'] > 0){
 				border: solid 1px #f2f2f2;
 				padding:5px;
 				display:inline-block;
+				
 			}
+			.block .row .seg{
+				*float:left;
+			}
+			form {margin:0;padding:0;}
+			
 			.right {
 				text-align:right;
 			}
@@ -113,7 +119,9 @@ if($_POST['count'] && $_POST['count'] > 0){
 				background-color:#f1f1f1;
 				border:solid 1px #666;
 				padding:4px;
+				*padding:0px;
 				cursor:pointer;
+				margin:2px;
 			}
 			.run{
 				background-color:#f1f1f1;
@@ -167,6 +175,7 @@ if($_POST['count'] && $_POST['count'] > 0){
 				document.getElementById('insert_zone').removeChild(me.parentNode);
 			}
 		</script>
+
 	</head>
 	<body>
 		<div id='container'>

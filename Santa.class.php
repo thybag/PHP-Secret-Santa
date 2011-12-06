@@ -31,13 +31,36 @@ Class SecretSanta {
 	 * @return success
 	 */
 	public function run($users_array){
-		if(sizeof($users_array)<2){
-			echo 'A minimum of 2 secret santa participants is required in order to use this system.';
-			return false;
-		}
-	
+		//Check array is safe to use
+		$ok = $this->validateArray($users_array);
+		if(!$ok) return false;
+		//If no issues, run!
 		$matched = $this->assign_users($users_array);
 		$this->sendEmails($matched);
+		return true;
+	}
+	
+	/**
+	 * Validate Array
+	 * Ensure array is safe to use in Secret Santa Script
+	 * @param Users Array
+	 * @return true if safe.
+	 */
+	private function validateArray($users_array){
+		//Ensure that more than 2 users have been provided
+		if(sizeof($users_array)<2){
+			echo '[Error] A minimum of 2 secret santa participants is required in order to use this system.';
+			return false;
+		}
+		//Check there are no duplicate emails
+		$tmp_emails = array();
+		foreach($users_array as $u){
+			if(in_array($u['email'],$tmp_emails)){
+				echo "[Error] Users cannot share an email or be in the secret santa more than once.";
+				return false;
+			}
+			$tmp_emails[] = $u['email'];
+		}
 		return true;
 	}
 	/**
@@ -47,6 +70,7 @@ Class SecretSanta {
 	public function setTitle($title){
 		$this->mail_title = $title;
 	}
+	
 	/**
 	 * Set the price secret santa items should be around
 	 * @param $price (in £'s)
@@ -54,6 +78,7 @@ Class SecretSanta {
 	public function setAmount($price){
 		$this->item_value = $price;
 	}
+	
 	/**
 	 * Set who your want the email to be sent from
 	 * @param $name Name of Sender (e.g. Santa)
@@ -62,6 +87,7 @@ Class SecretSanta {
 	public function setFrom($name,$email){
 		$this->mail_from = "{$name} < {$email} >";
 	}
+	
 	/**
 	 * Assign every user in the array their secret santa
 	 * Ensuring that everyone is assigned randomly and doesn't get themselves
@@ -105,6 +131,7 @@ Class SecretSanta {
 		//Return array of matched users
 		return $givers;
 	}
+	
 	/**
 	 * Send Emails
 	 * Emails all matched users with details of who they should be buying for.
@@ -128,6 +155,7 @@ Class SecretSanta {
 			mail($giver['email'], $this->mail_title, $email_body, "From: {$this->mail_from}\r\n");
 		}	
 	}
+	
 	/**
 	 * Get Sent Emails
 	 * Return the list of emails that have been sent via the script
